@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zacque's Projects</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: rgba(70, 130, 255, 0.8);
+            --secondary: rgba(100, 200, 255, 0.8);
+            --dark: rgba(10, 20, 40, 0.9);
+            --light: rgba(255, 255, 255, 0.9);
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --spotify-green: #1DB954;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark), #0a1428);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-attachment: fixed;
+        }
+
+        .bg-blur {
+            position: fixed;
+            top: -50px;
+            left: -50px;
+            right: -50px;
+            bottom: -50px;
+            background: radial-gradient(circle at 30% 50%, var(--primary), transparent 40%),
+                        radial-gradient(circle at 70% 30%, var(--secondary), transparent 40%);
+            filter: blur(80px);
+            z-index: -2;
+            opacity: 0.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        .hero h1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            border-radius: 15px;
+            z-index: -1;
+            transform: scale(1.05);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .creator-credit {
+            font-size: 0.9rem;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-spotify {
+            background: var(--spotify-green);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-spotify:hover {
+            background: #1ed760;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        /* Analog-style visitor counter */
+        .analog-counter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px auto;
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--glass-border);
+            max-width: 300px;
+        }
+
+        .counter-label {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .counter-display {
+            font-family: 'Courier New', monospace;
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            position: relative;
+            padding: 0 15px;
+        }
+
+        .counter-display::before,
+        .counter-display::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                var(--primary) 20%, 
+                var(--primary) 80%, 
+                transparent 100%);
+        }
+
+        .counter-display::before {
+            left: 0;
+        }
+
+        .counter-display::after {
+            right: 0;
+        }
+
+        .counter-note {
+            font-size: 0.8rem;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Rest of your existing styles... */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .project-card {
+            background: rgba(30, 30, 46, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border: 1px solid var(--glass-border);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .project-info {
+            padding: 20px;
+        }
+
+        .project-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .project-info p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tech-tag {
+            background: rgba(70, 130, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .artist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .artist-card {
+            background: rgba(30, 30, 46, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .artist-card:hover {
+            transform: translateY(-5px);
+            background: rgba(40, 40, 60, 0.8);
+        }
+
+        .artist-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--spotify-green);
+        }
+
+        .artist-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 3rem;
+            color: var(--spotify-green);
+        }
+
+        .artist-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .artist-genre {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .spotify-play {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--spotify-green);
+            border-radius: 50%;
+            color: white;
+            margin-top: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .artist-card:hover .spotify-play {
+            transform: scale(1.1);
+        }
+
+        .game-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .game-item {
+            background: rgba(30, 30, 46, 0.5);
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .game-item:hover {
+            transform: translateX(5px);
+            background: rgba(40, 40, 60, 0.7);
+        }
+
+        .game-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 60px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            color: var(--light);
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-blur"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">Zacque</div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-link" data-section="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-section="about">About</a></li>
+                    <li><a href="#" class="nav-link" data-section="projects">My Projects</a></li>
+                    <li><a href="#" class="nav-link" data-section="artists">My Music</a></li>
+                    <li><a href="#" class="nav-link" data-section="gaming">Gaming</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section id="home" class="section active">
+            <div class="hero">
+                <h1 class="floating">Hey, I'm <span id="name">Zacque</span> 👋</h1>
+                <p>14-year-old developer, music lover, and gaming enthusiast.</p>
+                <p class="creator-credit">This website is entirely created by me</p>
+                <button class="btn explore-btn">Explore My Projects</button>
+                
+                <div class="analog-counter">
+                    <div class="counter-label">VISITORS</div>
+                    <div class="counter-display" id="visitorDisplay">0</div>
+                    <div class="counter-note">Unique visits since launch</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rest of your sections remain unchanged -->
+        <section id="about" class="section">
+            <div class="card">
+                <h2 class="section-title">About Me</h2>
+                <p>I'm Zacque, a 14-year-old developer who loves creating digital projects. I'm passionate about coding, music, and gaming. When I'm not playing Roblox or Call of Duty Mobile, you can find me working on new coding projects or listening to my favorite artists.</p>
+                <p>I enjoy the creative process of turning ideas into reality through programming. Each project teaches me something new and helps me grow as a developer.</p>
+                
+                <div class="hobbies" style="margin-top: 40px;">
+                    <div class="hobby-card">
+                        <div class="hobby-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <div class="hobby-text">
+                            <h3>Web Development</h3>
+                            <p>Building interactive websites and web apps</p>
+                        </div>
+                    </div>
+                    
+                    <div class="hobby-card">
+                        <div class="hobby-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <div class="hobby-text">
+                            <h3>Music Production</h3>
+                            <p>Experimenting with digital music creation</p>
+                        </div>
+                    </div>
+                    
+                    <div class="hobby-card">
+                        <div class="hobby-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="hobby-text">
+                            <h3>Game Development</h3>
+                            <p>Creating simple games and mods</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <div class="card">
+                <h2 class="section-title">My Coding Projects</h2>
+                <p>Here are some of the projects I've created:</p>
+                
+                <div class="project-grid">
+                    <div class="project-card">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Personal Website" class="project-image">
+                        <div class="project-info">
+                            <h3>Personal Website</h3>
+                            <p>This very website you're viewing right now! A responsive portfolio site showcasing my skills and interests.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">HTML</span>
+                                <span class="tech-tag">CSS</span>
+                                <span class="tech-tag">JavaScript</span>
+                            </div>
+                            <a href="#" class="btn nav-link" data-section="home" style="padding: 8px 20px; font-size: 0.9rem;">View Project</a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <img src="https://images.unsplash.com/photo-1589254065878-42c9da997008?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Game Development" class="project-image">
+                        <div class="project-info">
+                            <h3>JavaScript Games</h3>
+                            <p>A collection of simple browser-based games including tic-tac-toe and snake.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">HTML5</span>
+                                <span class="tech-tag">CSS3</span>
+                            </div>
+                            <a href="#" class="btn" style="padding: 8px 20px; font-size: 0.9rem;" disabled>Coming Soon</a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Mobile App" class="project-image">
+                        <div class="project-info">
+                            <h3>Mobile App Projects</h3>
+                            <p>Experimental apps created while learning mobile development fundamentals.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">React Native</span>
+                                <span class="tech-tag">JavaScript</span>
+                            </div>
+                            <a href="#" class="btn" style="padding: 8px 20px; font-size: 0.9rem;" disabled>Coming Soon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="artists" class="section">
+            <div class="card">
+                <h2 class="section-title">My Music Taste</h2>
+                <p>These are the artists I'm currently vibing with:</p>
+                
+                <div class="artist-grid">
+                    <div class="artist-card" onclick="window.open('https://open.spotify.com/artist/3hv9jJF3adDNsBSIQDqcjp', '_blank')">
+                        <div class="artist-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="artist-name">Daniel Caesar</div>
+                        <div class="artist-genre">R&B, Soul</div>
+                        <div class="spotify-play">
+                            <i class="fab fa-spotify"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="artist-card" onclick="window.open('https://open.spotify.com/artist/5ziC5a5Q9K6tjV0WQzvs3I', '_blank')">
+                        <div class="artist-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="artist-name">Hev Abi</div>
+                        <div class="artist-genre">Hip-Hop, Rap</div>
+                        <div class="spotify-play">
+                            <i class="fab fa-spotify"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="artist-card" onclick="window.open('https://open.spotify.com/artist/5wBSX5l5WToWwM9G9WXhBP', '_blank')">
+                        <div class="artist-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="artist-name">Baby Blood</div>
+                        <div class="artist-genre">Alternative, Indie</div>
+                        <div class="spotify-play">
+                            <i class="fab fa-spotify"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="https://open.spotify.com/playlist/0rGWYe0i7yV4vvI55UtbxA?si=Yjblz0E1RP6nloXzLnz0FA&pi=80h7dbbQRKqIw" class="btn btn-spotify" target="_blank">
+                        <i class="fab fa-spotify"></i> My Spotify Playlist
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="gaming" class="section">
+            <div class="card">
+                <h2 class="section-title">Gaming</h2>
+                <p>When I'm not coding or listening to music, you can find me playing these games:</p>
+                
+                <div class="game-list">
+                    <div class="game-item">
+                        <div class="game-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="game-name">Roblox</div>
+                    </div>
+                    
+                    <div class="game-item">
+                        <div class="game-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="game-name">Call of Duty Mobile</div>
+                    </div>
+                    
+                    <div class="game-item">
+                        <div class="game-icon">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <div class="game-name">Minecraft</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <div class="spotify-play" style="margin: 0;" onclick="window.open('https://open.spotify.com/playlist/0rGWYe0i7yV4vvI55UtbxA?si=Yjblz0E1RP6nloXzLnz0FA&pi=80h7dbbQRKqIw', '_blank')">
+                    <i class="fab fa-spotify"></i>
+                </div>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>&copy; 2025 Zacque's Projects. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation between sections
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Hide all sections
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show selected section
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Update active nav link
+                document.querySelectorAll('.nav-link').forEach(navLink => {
+                    navLink.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // Explore button
+        document.querySelector('.explore-btn').addEventListener('click', function() {
+            // Hide home section
+            document.getElementById('home').classList.remove('active');
+            
+            // Show projects section
+            document.getElementById('projects').classList.add('active');
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(navLink => {
+                navLink.classList.remove('active');
+                if (navLink.getAttribute('data-section') === 'projects') {
+                    navLink.classList.add('active');
+                }
+            });
+        });
+
+        // Typewriter effect for name
+        const nameElement = document.getElementById('name');
+        const nameText = "Zacque";
+        let i = 0;
+        
+        function typeWriter() {
+            if (i < nameText.length) {
+                nameElement.innerHTML += nameText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        
+        // Start the typewriter effect after page loads
+        window.addEventListener('load', function() {
+            nameElement.innerHTML = '';
+            setTimeout(typeWriter, 500);
+        });
+
+        // Visitor counter with analog-style display
+        document.addEventListener('DOMContentLoaded', function() {
+            // Format number with k for thousands
+            function formatNumber(num) {
+                if (num >= 1000) {
+                    return (num / 1000).toFixed(1) + 'k';
+                }
+                return num.toString();
+            }
+
+            // Check if visitor has been counted in this session
+            if (!sessionStorage.getItem('visited')) {
+                // Get current count from localStorage or initialize to 0
+                let count = localStorage.getItem('visitorCount') || 0;
+                count = parseInt(count) + 1;
+                
+                // Update the count in localStorage
+                localStorage.setItem('visitorCount', count);
+                
+                // Mark this session as counted
+                sessionStorage.setItem('visited', 'true');
+                
+                // Update the display with animation
+                const display = document.getElementById('visitorDisplay');
+                let current = parseInt(display.textContent) || 0;
+                const target = count;
+                const increment = target > current ? 1 : -1;
+                
+                const counter = setInterval(() => {
+                    current += increment;
+                    display.textContent = formatNumber(current);
+                    
+                    if ((increment === 1 && current >= target) || 
+                        (increment === -1 && current <= target)) {
+                        clearInterval(counter);
+                        display.textContent = formatNumber(target);
+                    }
+                }, 20);
+            } else {
+                // Just display the current count without incrementing
+                const count = localStorage.getItem('visitorCount') || 0;
+                document.getElementById('visitorDisplay').textContent = formatNumber(count);
+            }
+        });
+    </script>
+</body>
+</html>
